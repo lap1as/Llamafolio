@@ -1,0 +1,13 @@
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--surface-on);
+  text-align: center;
+  user-select: none;
+}
+
+@media (min-width: 426px) {
+  .title {
+    margin: 0 0 0.5rem 0;
+  }
+}

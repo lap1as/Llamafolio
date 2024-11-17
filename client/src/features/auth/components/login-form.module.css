@@ -1,0 +1,22 @@
+.form {
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--surface);
+  box-shadow: var(--surface-shadow);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.button {
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 769px) {
+  .form {
+    padding: 2rem;
+  }
+}

@@ -1,0 +1,16 @@
+.wrapper {
+  user-select: none;
+  font-size: 0.875rem;
+  color: var(--surface-on-muted);
+}
+
+.link {
+  color: var(--surface-on);
+}
+
+@media (hover: hover) {
+  .link:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
+}

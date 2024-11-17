@@ -1,0 +1,20 @@
+.link {
+  display: inline-block;
+  transition: var(--transition);
+}
+
+.logo {
+  fill: var(--primary-color);
+}
+
+[data-theme='dark'] {
+  .logo {
+    fill: var(--background-on);
+  }
+}
+
+@media (hover: hover) {
+  .link:hover {
+    opacity: 0.8;
+  }
+}

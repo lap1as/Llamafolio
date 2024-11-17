@@ -1,0 +1,25 @@
+.or {
+  color: var(--surface-on-muted);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  opacity: 0.6;
+
+  &::before,
+  &::after {
+    content: '';
+    border: 1px solid var(--border-color);
+    flex: 1 1 0%;
+  }
+
+  &::before {
+    margin-inline-end: 1.5rem;
+  }
+
+  &::after {
+    margin-inline-start: 1.5rem;
+  }
+}

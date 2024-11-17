@@ -1,0 +1,39 @@
+.button {
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--surface-on);
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  outline-offset: -1px;
+  outline: 2px solid transparent;
+  background-color: transparent;
+  transition: var(--transition);
+}
+
+[data-theme='dark'] {
+  .button {
+    color: rgb(212, 212, 212);
+    background-color: rgb(64, 64, 64);
+    outline: none;
+  }
+}
+
+@media (hover: hover) {
+  .button:hover {
+    border-color: transparent;
+    outline-color: var(--primary-color-50);
+  }
+
+  [data-theme='dark'] {
+    .button:hover {
+      background-color: var(--border-color);
+    }
+  }
+}

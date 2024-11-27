@@ -23,6 +23,7 @@ dependencies = [
     "pyjwt<3.0.0,>=2.8.0",
     "sqlalchemy>=2.0.35",
     "pyotp>=2.9.0",
+    "ruff>=0.6.7",
 ]
 
 [tool.uv]

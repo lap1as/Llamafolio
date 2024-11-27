@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     FRONTEND_HOST: str = "http://localhost:5173"
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
 
-    BACKEND_CORS_ORIGINS: Annotated[
+    BACKEND_CORS_ORIGINS: Annotated[  # type: ignore
         list[AnyUrl] | str, BeforeValidator(parse_cors)
     ] = []
 
@@ -68,21 +68,15 @@ class Settings(BaseSettings):
             path=self.POSTGRES_DB,
         )
 
+    # MailerSend SMTP Configuration
     SMTP_TLS: bool = True
     SMTP_SSL: bool = False
-    SMTP_PORT: int = 587
-    SMTP_HOST: str | None = None
-    SMTP_USER: str | None = None
-    SMTP_PASSWORD: str | None = None
-    # TODO: update type to EmailStr when sqlmodel supports it
-    EMAILS_FROM_EMAIL: str | None = None
-    EMAILS_FROM_NAME: str | None = None
-
-    @model_validator(mode="after")
-    def _set_default_emails_from(self) -> Self:
-        if not self.EMAILS_FROM_NAME:
-            self.EMAILS_FROM_NAME = self.PROJECT_NAME
-        return self
+    SMTP_PORT: int = 587  # MailerSend SMTP port
+    SMTP_HOST: str | None = "smtp.mailersend.net"  # MailerSend SMTP host
+    SMTP_USER: str | None = None  # Your MailerSend API key
+    SMTP_PASSWORD: str | None = None  # Your MailerSend API key
+    EMAILS_FROM_EMAIL: str | None = None  # Sender email address
+    EMAILS_FROM_NAME: str | None = None  # Sender name
 
     EMAIL_RESET_TOKEN_EXPIRE_HOURS: int = 48
 
@@ -91,9 +85,7 @@ class Settings(BaseSettings):
     def emails_enabled(self) -> bool:
         return bool(self.SMTP_HOST and self.EMAILS_FROM_EMAIL)
 
-    # TODO: update type to EmailStr when sqlmodel supports it
     EMAIL_TEST_USER: str = "test@example.com"
-    # TODO: update type to EmailStr when sqlmodel supports it
     FIRST_SUPERUSER: str
     FIRST_SUPERUSER_PASSWORD: str
 

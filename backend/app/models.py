@@ -1,7 +1,9 @@
+from datetime import datetime
 import uuid
 
 from pydantic import EmailStr
 from sqlmodel import Field, Relationship, SQLModel
+
 
 
 # Shared properties
@@ -9,18 +11,32 @@ class UserBase(SQLModel):
     email: EmailStr = Field(unique=True, index=True, max_length=255)
     is_active: bool = True
     is_superuser: bool = False
-    full_name: str | None = Field(default=None, max_length=255)
 
 
 # Properties to receive via API on creation
-class UserCreate(UserBase):
-    password: str = Field(min_length=8, max_length=40)
+class UserCreate(SQLModel):
+    email: EmailStr
+    password: str = Field(..., min_length=8, max_length=40)
 
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "email": "user@example.com",
+                "password": "mySecurePassword123"
+            }
+        }
 
 class UserRegister(SQLModel):
-    email: EmailStr = Field(max_length=255)
-    password: str = Field(min_length=8, max_length=40)
-    full_name: str | None = Field(default=None, max_length=255)
+    email: EmailStr
+    password: str = Field(..., min_length=8, max_length=40)
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "email": "newuser@example.com",
+                "password": "newUserPassword456"
+            }
+        }
 
 
 # Properties to receive via API on update, all are optional
@@ -30,7 +46,6 @@ class UserUpdate(UserBase):
 
 
 class UserUpdateMe(SQLModel):
-    full_name: str | None = Field(default=None, max_length=255)
     email: EmailStr | None = Field(default=None, max_length=255)
 
 
@@ -43,6 +58,9 @@ class UpdatePassword(SQLModel):
 class User(UserBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     hashed_password: str
+    otp_secret: str | None = Field(default=None)
+    failed_otp_attempts: int = Field(default=0)
+    lockout_until: datetime | None = Field(default=None)
     items: list["Item"] = Relationship(back_populates="owner", cascade_delete=True)
 
 
@@ -75,10 +93,7 @@ class ItemUpdate(ItemBase):
 # Database model, database table inferred from class name
 class Item(ItemBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    title: str = Field(max_length=255)
-    owner_id: uuid.UUID = Field(
-        foreign_key="user.id", nullable=False, ondelete="CASCADE"
-    )
+    owner_id: uuid.UUID = Field(foreign_key="user.id", nullable=False, ondelete="CASCADE")
     owner: User | None = Relationship(back_populates="items")
 
 
